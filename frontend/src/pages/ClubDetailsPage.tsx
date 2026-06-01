@@ -1,14 +1,16 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, Send } from "lucide-react";
 
 import { api, getToken } from "../api/client";
 import { StatusBadge } from "../components/StatusBadge";
-import { clubs } from "../data/sampleData";
+import type { Club } from "../types";
 
 export function ClubDetailsPage() {
   const { id } = useParams();
-  const club = clubs.find((item) => item.id === Number(id)) ?? clubs[0];
+  const clubId = Number(id);
+  const [club, setClub] = useState<Club | null>(null);
+  const [loadError, setLoadError] = useState("");
   const [form, setForm] = useState({
     studentFullName: "",
     age: "",
@@ -19,11 +21,44 @@ export function ClubDetailsPage() {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadClub() {
+      if (!Number.isInteger(clubId) || clubId <= 0) {
+        setLoadError("Club not found.");
+        return;
+      }
+      try {
+        const loadedClub = await api.readClub(clubId);
+        if (!cancelled) {
+          setClub(loadedClub);
+          setLoadError("");
+        }
+      } catch (clubError) {
+        if (!cancelled) {
+          setClub(null);
+          setLoadError(clubError instanceof Error ? clubError.message : "Club not found.");
+        }
+      }
+    }
+
+    loadClub();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [clubId]);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitted(false);
     setError("");
 
+    if (!club) {
+      setError("Club not found.");
+      return;
+    }
     if (!getToken()) {
       setError("Please log in or register before submitting an application.");
       return;
@@ -45,6 +80,21 @@ export function ClubDetailsPage() {
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  if (!club) {
+    return (
+      <main className="min-h-screen bg-canvas px-4 py-6 text-ink sm:px-6 lg:px-8">
+        <section className="mx-auto max-w-2xl rounded-lg border border-line bg-white p-6 text-center shadow-sm">
+          <Link className="inline-flex items-center gap-2 text-sm font-semibold text-primaryDark hover:text-primary" to="/">
+            <ArrowLeft size={16} aria-hidden="true" />
+            Back to clubs
+          </Link>
+          <h1 className="mt-6 text-2xl font-semibold">{loadError ? "Club unavailable" : "Loading club..."}</h1>
+          <p className="mt-2 text-sm leading-6 text-muted">{loadError || "Please wait while the club details load."}</p>
+        </section>
+      </main>
+    );
   }
 
   return (

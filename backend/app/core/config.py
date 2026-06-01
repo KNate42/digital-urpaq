@@ -17,8 +17,7 @@ class Settings(BaseSettings):
     ]
 
     INITIAL_ADMIN_EMAIL: str = "admin@digitalurpaq.local"
-    INITIAL_ADMIN_PASSWORD: str = "ChangeMe123!"
-    ENABLE_DEMO_SEED: bool = True
+    INITIAL_ADMIN_PASSWORD: str = "replace-this-admin-password"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", case_sensitive=True)
 

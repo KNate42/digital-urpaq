@@ -30,7 +30,6 @@ Digital Urpaq
 |   `-- src
 |       |-- api
 |       |-- components
-|       |-- data
 |       |-- layouts
 |       `-- pages
 |-- docs
@@ -38,8 +37,7 @@ Digital Urpaq
 |   |-- ARCHITECTURE.md
 |   |-- ERD.md
 |   |-- FOLDER_STRUCTURE.md
-|   |-- MVP_PLAN.md
-|   `-- digital-urpaq-ui-concept.png
+|   `-- MVP_PLAN.md
 |-- docker-compose.yml
 |-- .env.example
 |-- .gitignore

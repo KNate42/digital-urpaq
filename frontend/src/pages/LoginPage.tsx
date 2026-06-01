@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LogIn } from "lucide-react";
 
-import { api, isApiUnavailableError, setToken } from "../api/client";
+import { api } from "../api/client";
 import type { UserRole } from "../types";
 
 function routeForRole(role: UserRole): string {
@@ -17,8 +17,8 @@ function routeForRole(role: UserRole): string {
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("admin@digitalurpaq.local");
-  const [password, setPassword] = useState("ChangeMe123!");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,11 +30,6 @@ export function LoginPage() {
       const role = await api.login(email, password);
       navigate(routeForRole(role), { replace: true });
     } catch (loginError) {
-      if (isApiUnavailableError(loginError) && email === "admin@digitalurpaq.local" && password === "ChangeMe123!") {
-        setToken("offline-demo-admin-token");
-        navigate("/admin", { replace: true });
-        return;
-      }
       setError(loginError instanceof Error ? loginError.message : "Login failed");
     } finally {
       setIsLoading(false);

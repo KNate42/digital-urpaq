@@ -35,7 +35,10 @@ flowchart LR
 - `components`: reusable UI building blocks.
 - `layouts`: role-aware app shell and navigation.
 - `pages`: routed screens for public, auth, student, teacher, and administrator workflows.
-- `data`: realistic demo data used when the API is not available yet.
+
+The frontend does not ship local records. Empty or unavailable API responses
+render empty states instead of synthetic clubs, users, applications, materials,
+or announcements.
 
 ## Roles And Access
 
@@ -69,6 +72,7 @@ This can later be upgraded to an LLM or embedding-based service without changing
 ## Production Hardening Checklist
 
 - Replace `SECRET_KEY` in production.
+- Set `INITIAL_ADMIN_EMAIL` and `INITIAL_ADMIN_PASSWORD` before the first deployment.
 - Add Alembic migrations before multi-environment deployment.
 - Add refresh tokens or session rotation if long-lived sessions are required.
 - Add audit logs for administrative writes.

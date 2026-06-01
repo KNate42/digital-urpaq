@@ -16,7 +16,7 @@ const API_URL = import.meta.env.VITE_API_URL ?? `${window.location.protocol}//${
 const TOKEN_KEY = "digital_urpaq_token";
 
 export const API_UNAVAILABLE_MESSAGE =
-  "Backend API is unavailable. Start the backend on port 8000 or keep using the local demo data.";
+  "Backend API is unavailable. Start the backend on port 8000.";
 
 interface ApiRecommendation {
   club_id: number;
@@ -277,6 +277,11 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
 }
 
 export const api = {
+  async currentUser(): Promise<ManagedUser> {
+    const response = await request<ApiUser>("/auth/me");
+    return mapUser(response);
+  },
+
   async login(email: string, password: string): Promise<UserRole> {
     const body = new URLSearchParams();
     body.set("username", email);
@@ -325,6 +330,11 @@ export const api = {
   async listClubs(): Promise<Club[]> {
     const response = await request<ApiClub[]>("/clubs");
     return response.map(mapClub);
+  },
+
+  async readClub(id: number): Promise<Club> {
+    const response = await request<ApiClub>(`/clubs/${id}`);
+    return mapClub(response);
   },
 
   async createClub(payload: ClubWritePayload): Promise<Club> {
@@ -377,16 +387,13 @@ export const api = {
   },
 
   async listMaterials(): Promise<Material[]> {
-    try {
-      const response = await request<ApiContent[]>("/content/assigned");
-      return response.map(mapMaterial);
-    } catch (error) {
-      if (isApiUnavailableError(error)) {
-        throw error;
-      }
-      const publicResponse = await request<ApiContent[]>("/content");
-      return publicResponse.map(mapMaterial);
-    }
+    const response = await request<ApiContent[]>("/content/assigned");
+    return response.map(mapMaterial);
+  },
+
+  async listPublicMaterials(): Promise<Material[]> {
+    const response = await request<ApiContent[]>("/content");
+    return response.map(mapMaterial);
   },
 
   async createMaterial(payload: MaterialWritePayload): Promise<Material> {

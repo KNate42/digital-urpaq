@@ -29,6 +29,12 @@ docker compose up --build
 - Backend API: http://localhost:8000/api
 - API docs: http://localhost:8000/docs
 
+On a clean database the backend creates only the bootstrap administrator from
+`INITIAL_ADMIN_EMAIL` and `INITIAL_ADMIN_PASSWORD`. No clubs, applications,
+materials, announcements, teachers, students, parents, or other records are
+created automatically. Set a production-strength `SECRET_KEY` and admin password
+before the first production start.
+
 ## Default Local Services
 
 - PostgreSQL: `localhost:5432`

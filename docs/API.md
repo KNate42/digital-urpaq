@@ -41,8 +41,9 @@ Base URL: `/api`
 
 | Method | Endpoint | Access | Description |
 | --- | --- | --- | --- |
-| GET | `/content` | Public/Auth | List public or assigned content. |
-| GET | `/content/{content_id}` | Public/Auth | Read content. |
+| GET | `/content` | Public | List public content. |
+| GET | `/content/assigned` | Student/Parent/Teacher/Admin | List assigned content based on approvals, authorship, or admin access. |
+| GET | `/content/{content_id}` | Public/Auth | Read public content or content visible to the current user. |
 | POST | `/content` | Teacher/Admin | Create article, video, presentation, attachment, or homework. |
 | PUT | `/content/{content_id}` | Author/Admin | Update content. |
 | DELETE | `/content/{content_id}` | Author/Admin | Delete content. |
@@ -76,14 +77,8 @@ Response:
 
 ```json
 {
-  "recommendations": [
-    {
-      "club_id": 1,
-      "club_name": "Robotics Lab",
-      "category": "Robotics",
-      "score": 92,
-      "explanation": "Strong age fit, matching robotics interest, and available seats."
-    }
-  ]
+  "recommendations": []
 }
 ```
+
+A clean database returns an empty recommendation list until clubs are created.

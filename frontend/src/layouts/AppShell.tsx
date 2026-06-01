@@ -168,25 +168,18 @@ export function AppShell({ role, title, children, actions }: AppShellProps) {
             </div>
 
             <div className="ml-auto flex items-center gap-2">
-              <button
-                className="hidden h-10 items-center gap-2 rounded-md border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 xl:inline-flex"
-                type="button"
-              >
+              <div className="hidden h-10 items-center gap-2 rounded-md border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 shadow-sm xl:inline-flex">
                 <MapPin size={16} aria-hidden="true" />
-                Astana Education Center
-                <ChevronDown size={16} aria-hidden="true" />
-              </button>
+                Education Center
+              </div>
               {actions}
               <button className="relative flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:bg-slate-50 hover:text-ink" type="button">
                 <Bell size={18} aria-label="Notifications" />
-                <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white" />
               </button>
               <button className="hidden h-10 items-center gap-3 border-l border-slate-200 pl-4 text-left md:flex" type="button">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-teal-500 to-sky-500 text-sm font-bold text-white">
-                  AS
-                </span>
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">DU</span>
                 <span className="hidden xl:block">
-                  <span className="block text-sm font-bold text-ink">Aigerim S.</span>
+                  <span className="block text-sm font-bold text-ink">Account</span>
                   <span className="block text-xs font-semibold text-muted">{roleLabels[role]}</span>
                 </span>
                 <ChevronDown className="hidden text-slate-400 xl:block" size={16} aria-hidden="true" />
